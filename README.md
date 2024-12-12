@@ -14,6 +14,7 @@ VM 共享的是硬體，創造出虛擬的 OS；Docker 則是共享 OS，創造�
 # Build Cache
 
 為了提升建置速度，`Docker` 提供了 Build Cache 機制，重複使用已經生成的 Layer，避免每次建置都重新執行相同的指令。  
+
 透過 `--cache-from` 參數，可以指定使用的 Cache 來源，進一步提升建置效能。
 
 ![Build Cache](BuildCache.png)
@@ -91,23 +92,29 @@ $ sudo docker run \
 
 ![Nginx_Docker-compose](nginx_Docker-compose.png)
 
-
 # Multi-Stage Builds
+
 使用`Multi-Stage Builds` 減少 `Docker` 映像大小，改善構建流程的可讀性與可維護性。
 
 ![Multi-Stage Builds](MultiStage.png)
+
 ### Stage-A：構建階段
+
 利用 Node.js 環境構建應用程式，生成靜態文件存放於 dist/ 目錄。
+
 ### Stage-B：部署階段
+
 使用 NGINX 作為靜態文件伺服器，並將構建階段的靜態文件複製進來。
+
 ## NGINX Config
+
 用於將靜態文件部署在 vue.test 域名上，並支援 URL 重寫。
 
 ![NGINX Config](nginx_muti.png)
 
 # Certbot
 
-`Let's Encrypt` 提供免費的憑證申請服務，但前提是您必須擁有相關的網域。
+`Let's Encrypt` 提供免費的憑證申請服務，但前提是必須擁有相關的網域。
 `Certbot` 是一款能夠自動化處理憑證申請的工具，它可以自動讀取 `NGINX` 的設定檔，檢索設定的網域後，向 `Let's Encrypt`申請對應的憑證。
 此外，`Certbot` 還能自動檢測憑證的有效期限，並在必要時自動更新，確保服務不中斷。
 
@@ -127,5 +134,10 @@ Volume 綁定則設置了兩個目錄：
 2. `user_conf.d/`：這是 `nginx-certbot` 映像檔特別定義的目錄，用來存放自訂的 `NGINX` 設定檔。
 
 ![Certbot_nginx](Certbot_nginx.png)
+
+
 在 `NGINX` 設定檔中，將 `louis-ithelp.example.com` 替換為您擁有的實際網域名稱，以確保伺服器能正確回應對應的請求。
+
+
+
 
